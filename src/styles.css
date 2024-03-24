@@ -123,7 +123,7 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
+  width: 400px;
   height: 500px;
   background-color: var(--header-color);
   display: flex;
@@ -133,6 +133,7 @@ button {
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .7);
   border-radius: 20px;
   z-index: 2;
+  overflow: auto;
 }
 
 .username-popup {
