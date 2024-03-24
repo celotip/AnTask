@@ -1,0 +1,373 @@
+@import url('https://fonts.googleapis.com/css2?family=Rowdies:wght@300;400;700&display=swap');
+
+:root {
+    --text-white-color: white;
+    --text-grey-color: rgb(186, 186, 186);
+    --header-color: rgb(18, 23, 33);
+    --sidebar-width: 200px;
+}
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    overflow: hidden;
+}
+
+body > * {
+  box-sizing: border-box;
+}
+
+header {
+    position: fixed;
+    color: var(--text-white-color);
+    background-color: var(--header-color);
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 40px;
+    font-family: "Rowdies";
+}
+
+header button {
+    padding-left: 10px;
+    color: var(--text-white-color);
+    background-color: var(--header-color);
+    border: none;
+}
+
+header :last-child {
+  padding-right: 10px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.sidebar {
+    bottom: 0;
+    top: 40px;
+    width: var(--sidebar-width);
+    position: fixed;
+    z-index: 1;
+    background-color: var(--header-color);
+    overflow-x: hidden;
+    transition: 0.5s;
+}
+  
+.sidebar a, .sidebar h3 {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    color: var(--text-white-color);
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar h3 {
+    padding-top: 20px;
+    text-transform: capitalize;
+}
+
+.sidebar > a:first-child {
+    padding-top: 40px;
+}
+
+.tag-container {
+  display: flex;
+  justify-content: space-between;
+  width: 160px;
+}
+
+.sidebar button {
+  color: var(--text-grey-color);
+  background-color: var(--header-color);
+  border: none;
+  font-size: larger;
+}
+
+.tags-list > * {
+  margin: 8px 8px 8px 45px;
+  color: var(--text-white-color);
+}
+
+.tags-list :first-child {
+  margin-top: 10px;
+}
+
+.tags-list button {
+  color: white;
+  border-radius: 10px;
+  font-size: 12px;
+  padding: 5px 20px;
+  width: 120px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  overflow: hidden; 
+
+}
+
+.color {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  border: none;
+}
+
+.colors-container {
+  display:flex;
+}
+
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background-color: var(--header-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: white;
+  box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .7);
+  border-radius: 20px;
+  z-index: 2;
+}
+
+.username-popup {
+  width: 300px;
+  height: 150px;
+}
+
+.username-popup > .container > h3 {
+  margin-top: 0;
+}
+
+.card-section-container {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow: ellipsis;
+}
+
+.card-popup {
+  display: grid;
+  grid-template-rows: 40px 90px auto 90px ;
+  gap: 5px;
+  padding: 15px;
+}
+
+.card-popup h2 {
+  margin-top: 0;
+}
+
+.card-popup .buttons-container {
+  justify-content: flex-end;
+  gap: 10px;
+  width: 350px;
+  align-items: center;
+}
+
+.new-task-popup, .edit-task-popup, .username-popup {
+  align-items: center;
+}
+
+.new-task-popup form, .edit-task-popup form {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  gap: 30px;
+}
+
+.popup button {
+  background-color: var(--header-color);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  width: 80px;
+  box-sizing: border-box;
+}
+
+.popup button:hover, .close:hover {
+  color:rgb(0, 72, 255);
+}
+
+.popup .cancel {
+  color: rgb(191, 27, 27) !important;
+}
+
+.popup button:hover {
+  background-color: rgb(15, 19, 28);
+  border-radius: 10px;
+}
+
+.popup input {
+  border: none;
+  background-color: var(--header-color);
+  color:white;
+  padding: 5px 10px;
+}
+
+.username-popup input {
+  border: solid 1px white;
+}
+
+.username-popup .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.popup textarea {
+  border: none;
+  background-color: var(--header-color);
+  color:white;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  width: 250px;
+}
+  
+  /* .bg {
+    background-image: url('./bg.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  } */
+
+  .bg-none {
+    background-color: rgb(41, 50, 67);
+  }
+
+  #content {
+    padding: 15px;
+    /* padding-left: var(--sidebar-width); */
+    width: 100vw;
+    height: 100vh;
+    transition: padding-left .5s;
+    color: white;
+    box-sizing: border-box;
+  }
+
+  #content .container:first-child {
+    padding: 45px 0 0 16px;
+  }
+
+  .home {
+    display: grid;
+    grid-template-columns: max(400px, 50%) auto;
+    grid-template-rows: 100px auto;
+    grid-template-areas: 
+      "heading add-task"
+      "tasks add-task";
+    gap: 150px;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .phone {
+    display: grid;
+    grid-template-rows: 100px auto auto;
+    gap: 100px;
+    height: 100%;
+    grid-template-areas: 
+      "heading"
+      "tasks"
+      "add-task";
+    box-sizing: border-box;
+  }
+
+.today-tasks-container {
+  grid-area: tasks;
+  background-color: var(--header-color);
+  padding: 20px;
+  border-radius: 10px;
+  height:auto;
+}
+
+.add-tasks-container {
+  grid-area: add-task;
+  background-color: var(--header-color);
+  padding: 20px;
+  border-radius: 10px;
+  display: grid;
+  grid-template-rows: auto 30px;
+}
+
+.heading-container {
+  grid-area: heading;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 90px;
+}
+
+.heading-container h1 {
+  margin-bottom: 0;
+  font-size: 3em;
+}
+
+.card {
+  display: grid;
+  grid-template-columns: 20px auto 50px 20px;
+  gap: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.card > * {
+  display: flex;
+  align-items: center;
+}
+
+.check {
+  border: solid 1px white;
+  width: 18px;
+  cursor: pointer;
+}
+
+.name {
+  overflow: ellipsis;
+}
+
+.tasks-container {
+  overflow: auto;
+}
+
+.new-task {
+  border: dashed white 1px;
+  width: 100%;
+  background-color: var(--header-color);
+  color: white;
+}
+
+.remove {
+  cursor: pointer;
+  font-size: 8px;
+}
+
+.done {
+  color: rgba(97, 91, 91, 0.5);
+}
+
+.check-done {
+  border-color: rgba(97, 91, 91, 0.5);
+  display: flex;
+  justify-content: center;
+}
+
+.del, .close {
+  cursor: pointer;
+}
+
+.close {
+  padding-bottom: 6px;
+  font-size: 10px;
+}
+
+

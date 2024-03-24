@@ -4,12 +4,15 @@
   "description": "A to do app made with html, css, javascript, and webpack",
   "main": "webpack.config.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "git subtree push --prefix dist origin gh-pages",
+    "build": "npx webpack --watch"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "css-loader": "^6.10.0",
+    "date-fns": "^3.6.0",
     "html-webpack-plugin": "^5.6.0",
     "style-loader": "^3.3.4",
     "webpack": "^5.90.3",
