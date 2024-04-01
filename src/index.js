@@ -319,80 +319,58 @@ content.appendChild(home());
 const tagPopup = document.querySelector(".tag-popup");
 const tagForm = document.querySelector(".tag-popup > form");
 const cancelTag = document.querySelector(".tag-popup > form > .cancel");
+
 tagForm.addEventListener("submit", (e) => {
     e.preventDefault();
 })
+
 cancelTag.addEventListener("click", () => {
     tagPopup.style.visibility = "hidden";
 })
 
-function clearNewForm() {
-    const title = document.getElementById("new-title");
-    const desc = document.getElementById("new-desc");
-    const due = document.getElementById("new-due");
-    title.value = "";
-    desc.value = "";
-    due.value = "";
-}
+const newTitle = document.getElementById("new-title");
+const newDesc = document.getElementById("new-desc");
+const newDue = document.getElementById("new-due");
+const newTaskPopup = document.querySelector(".new-task-popup");
 
-function addNewListener() {
-    const newTaskButton = document.querySelector(".new-task");
-    newTaskButton.addEventListener("click", () => {
-    const newTaskPopup = document.querySelector(".new-task-popup");
+const newTaskButton = document.querySelector(".new-task");
+newTaskButton.addEventListener("click", () => {
     newTaskPopup.style.visibility = "visible";
-    addCancelListener();
-    const form = document.querySelector(".new-task-popup > form");
-    const title = document.getElementById("new-title");
-    const desc = document.getElementById("new-desc");
-    const due = document.getElementById("new-due");
-    form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        TasksList.list.push(new Task(title.value, desc.value, due.value, false));
-        updateStorage();
-        updateTodayTasks();
-        updateAddTasks();
-        newTaskPopup.style.visibility = "hidden";
-        console.log(TasksList.list);
-        console.log(title.value, desc.value, due.value)
-        clearNewForm(); 
-    })
+    newTitle.value = "";
+    newDesc.value = "";
+    newDue.value = ""; 
 })
-}
 
-addNewListener();
+const newForm = document.querySelector(".new-task-popup > form");
+newForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    TasksList.list.push(new Task(newTitle.value, newDesc.value, newDue.value, false));
+    updateStorage();
+    updateAddTasks();
+    newTaskPopup.style.visibility = "hidden";
+})
 
-function addCancelListener() {
-    const cancel = document.querySelector(".new-task-popup > form > .buttons-container > .cancel");
-    cancel.addEventListener("click", () => {
-        const newTaskPopup = document.querySelector(".new-task-popup");
-        newTaskPopup.style.visibility = "hidden";
-        clearNewForm(); 
-    })
-}
+const cancel = document.querySelector(".new-task-popup > form > .buttons-container > .cancel");
+cancel.addEventListener("click", () => {
+    newTaskPopup.style.visibility = "hidden";
+})
 
 function updateTodayTasks() {
     const todayTasksContainer1 = document.querySelector(".today-tasks-container-1");
     todayTasksContainer1.innerHTML = "";
     todayTasksContainer1.appendChild(displayTodayTasks());
     addRemoveListener();
-    addAddListener();
     addDoneListener();
     addCardListener()
 }
 
 function updateAddTasks() {
-    const addTasksContainer = document.querySelector(".add-tasks-container");
+    const addTasksContainer = document.querySelector(".add-tasks");
     addTasksContainer.innerHTML = "";
-    const newTaskButton = document.createElement("button");
-    newTaskButton.classList.add("new-task");
-    newTaskButton.innerHTML = "New Task";
     addTasksContainer.appendChild(addTasks());
-    addTasksContainer.appendChild(newTaskButton);
-    addRemoveListener();
     addAddListener();
     addDelListener();
-    addNewListener();
-    addCardListener()
+    addCardListener();
 }
 
 function addRemoveListener() {
@@ -485,11 +463,12 @@ function updateStorage() {
     localStorage.setItem("tasksList", JSON.stringify(TasksList.list));
 }
 
+const cardPopup = document.querySelector(".card-popup");
+
 function addCardListener() {
     const cards = document.querySelectorAll(".card");
     cards.forEach((card) => {
         card.addEventListener("click", () => {
-            const cardPopup = document.querySelector(".card-popup");
             cardPopup.style.visibility = "visible";
             const edit = document.querySelector(".edit");
             edit.dataset.name = card.dataset.name;
@@ -504,65 +483,51 @@ function addCardListener() {
             due.innerHTML = format(tasks[0].due, "MMM dd yyyy");
         })
     })
-    addCardButtonsListener();
 }
 
 addCardListener();
 
-function addEditCancelListener() {
-    const cancel = document.querySelector(".edit-task-popup > form > .buttons-container > .cancel");
-    cancel.addEventListener("click", () => {
-        const editTaskPopup = document.querySelector(".edit-task-popup");
-        editTaskPopup.style.visibility = "hidden";
-    })
-}
+const editTaskPopup = document.querySelector(".edit-task-popup");
+const editForm = document.querySelector(".edit-task-popup > form");
+const editTitle = document.getElementById("edit-title");
+const editDesc = document.getElementById("edit-desc");
+const editDue = document.getElementById("edit-due");
+
+const cancelEdit = document.querySelector(".edit-task-popup > form > .buttons-container > .cancel");
+cancelEdit.addEventListener("click", () => {
+    editTaskPopup.style.visibility = "hidden";
+})
 
 function addEditListener(name) {
-    addEditCancelListener();
-    const editTaskPopup = document.querySelector(".edit-task-popup");
-    const form = document.querySelector(".edit-task-popup > form");
-    const title = document.getElementById("edit-title");
-    const desc = document.getElementById("edit-desc");
-    const due = document.getElementById("edit-due");
-    form.addEventListener("submit", (e) => {
+    editForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const tasks = TasksList.list.filter((task) => {
             return task.name === name;
         })
-        tasks[0].name = title.value;
-        tasks[0].notes = desc.value;
-        tasks[0].due = due.value;
+        tasks[0].name = editTitle.value;
+        tasks[0].notes = editDesc.value;
+        tasks[0].due = editDue.value;
         updateStorage();
         updateTodayTasks();
         updateAddTasks();
         editTaskPopup.style.visibility = "hidden";
-        console.log(TasksList.list);
-        console.log(title.value, desc.value, due.value)
     })
 }
 
-function addCardButtonsListener() {
-    const closeButton = document.querySelector(".close");
-    closeButton.addEventListener("click", () => {
-        const cardPopup = document.querySelector(".card-popup");
-        cardPopup.style.visibility = "hidden";
+const closeButton = document.querySelector(".close");
+closeButton.addEventListener("click", () => {
+    cardPopup.style.visibility = "hidden";
 }) 
 
 const editButton = document.querySelector(".edit");
-    editButton.addEventListener("click", () => {
-        const cardPopup = document.querySelector(".card-popup");
-        cardPopup.style.visibility = "hidden";
-        const editTaskPopup = document.querySelector(".edit-task-popup");
-        editTaskPopup.style.visibility = "visible";
-        const title = document.getElementById("edit-title");
-        const desc = document.getElementById("edit-desc");
-        const due = document.getElementById("edit-due");
-        const tasks = TasksList.list.filter((task) => {
-            return task.name === editButton.dataset.name;
-        })
-        title.value = tasks[0].name;
-        desc.value = tasks[0].notes;
-        due.value = tasks[0].due;
-        addEditListener(editButton.dataset.name);
-}) 
-}
+editButton.addEventListener("click", () => {
+    cardPopup.style.visibility = "hidden";
+    editTaskPopup.style.visibility = "visible";
+    const tasks = TasksList.list.filter((task) => {
+        return task.name === editButton.dataset.name;
+    })
+    editTitle.value = tasks[0].name;
+    editDesc.value = tasks[0].notes;
+    editDue.value = tasks[0].due;
+    addEditListener(editButton.dataset.name);
+})
