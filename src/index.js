@@ -61,14 +61,14 @@ const menuButton = document.getElementById("menu");
 const sidebar = document.querySelector(".sidebar");
 
 function openNav() {
-    const sidebarWidth = "200px";
-    document.getElementById("mySidebar").style.width = sidebarWidth;
-    document.getElementById("content").style.paddingLeft = sidebarWidth;
+    const sidebarWidth = 200;
+    document.getElementById("mySidebar").style.width = `${sidebarWidth}px`;
+    document.getElementById("content").style.paddingLeft = `${sidebarWidth + 15}px`;
 }
   
 function closeNav() {
     document.getElementById("mySidebar").style.width = "0";
-    document.getElementById("content").style.paddingLeft= "0";
+    document.getElementById("content").style.padding= "15px";
 }
 
 var divs = document.querySelectorAll(".main-container > :not(.sidebar)");
@@ -473,7 +473,7 @@ newForm.addEventListener("submit", (e) => {
     e.preventDefault();
     TasksList.list.push(new Task(newTitle.value, newDesc.value, newDue.value, false));
     updateStorage();
-    if (document.querySelector(".home")) {
+    if (document.querySelector(".home") || document.querySelector(".phone")) {
         updateAddTasks();
     } else {
         updateWeekTasks(newDue.value);
@@ -626,7 +626,7 @@ function addDelListener() {
                 return task.name !== button.dataset.name;
             })
             updateStorage();
-            if (document.querySelector(".home")) {
+            if (document.querySelector(".home") || document.querySelector(".phone")) {
                 updateAddTasks();
             } else {
                 updateWeekTasks(button.dataset.date);
@@ -732,7 +732,7 @@ editForm.addEventListener("submit", (e) => {
     tasks[0].name = editTitle.value;
     tasks[0].notes = editDesc.value;
     tasks[0].due = editDue.value;
-    if (document.querySelector(".home")) {
+    if (document.querySelector(".home") || document.querySelector(".phone")) {
         updateTodayTasks();
         updateAddTasks();
     } else {
