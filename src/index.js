@@ -99,7 +99,7 @@ menuButton.addEventListener("click", () => {
 });
 
 const today = document.getElementById("today");
-const addTag = document.getElementById("add-tag");
+// const addTag = document.getElementById("add-tag");
 
 today.addEventListener("click", () => {
     content.classList.remove("bg");
@@ -119,9 +119,21 @@ week.addEventListener("click", () => {
     addWeekListeners();
 })
 
-addTag.addEventListener("click", () => {
-    tagPopup.style.visibility = "visible";
-})
+// function displayTags() {
+//     const tagsContainer = document.createElement("div")
+//     tagsContainer.classList.add("tags-container")
+//     TagsList.list.forEach((tag) => {
+//         const tagButton = document.createElement("button")
+//         tagButton.style.backgroundColor = tag.color
+//         tagButton.innerHTML = tag.name
+//         tagsContainer.appendChild(tagButton)
+//     })
+//     return tagsContainer
+// }
+
+// addTag.addEventListener("click", () => {
+//     tagPopup.style.visibility = "visible";
+// })
 
 
 
@@ -297,6 +309,7 @@ function createWeekCardTask(taskName, taskDue, done) {
     const card = document.createElement("div");
     card.classList.add("card");
     card.setAttribute("data-name", taskName);
+    card.setAttribute("data-due", taskDue);
     const check = document.createElement("div");
     check.classList.add("check");
     check.setAttribute("data-name", taskName);
@@ -418,6 +431,17 @@ if (window.localStorage.getItem("tasksList")) {
 }
 content.appendChild(home());
 
+// TagsList.list.push(new Tag("Priority", "#ce1e1e"))
+// TagsList.list.push(new Tag("Top", "#c2ce1e"))
+// TagsList.list.push(new Tag("Homework", "#1e2cce"))
+
+// function updateTagsSidebar() {
+//     const tagsSidebar = document.querySelector(".tags-list")
+//     tagsSidebar.innerHTML = ""
+//     tagsSidebar.appendChild(displayTags())
+// }
+
+// updateTagsSidebar()
 
 
 
@@ -429,7 +453,7 @@ content.appendChild(home());
 // Others
 const tagPopup = document.querySelector(".tag-popup");
 const tagForm = document.querySelector(".tag-popup > form");
-const cancelTag = document.querySelector(".tag-popup > form > .cancel");
+const cancelTag = document.querySelector(".tag-popup > form > .tag-buttons > .cancel");
 
 tagForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -452,7 +476,7 @@ newForm.addEventListener("submit", (e) => {
     if (document.querySelector(".home")) {
         updateAddTasks();
     } else {
-        updateWeekTasks();
+        updateWeekTasks(newDue.value);
     }
     newTaskPopup.style.visibility = "hidden";
 })
@@ -497,16 +521,23 @@ function updateAddTasks() {
     addAddTaskListeners()
 }
 
-function updateWeekTasks() {
-    const todayContainer = document.querySelector(".today-container");
-    todayContainer.innerHTML = "";
-    todayContainer.appendChild(displayToday());
-    const weekContainer = document.querySelector(".week-container");
-    weekContainer.innerHTML = "";
-    weekContainer.appendChild(displayWeek());
-    const laterContainer = document.querySelector(".later-container");
-    laterContainer.innerHTML = "";
-    laterContainer.appendChild(displayLater());
+function updateWeekTasks(due) {
+    if (new Date(due) <= new Date()) {
+        const todayContainer = document.querySelector(".today-container");
+        todayContainer.innerHTML = "";
+        todayContainer.appendChild(displayToday());
+        console.log("update today")
+    } else if (new Date(due) > new Date() && new Date(due) <= addDays(new Date(), 7)) {
+        const weekContainer = document.querySelector(".week-container");
+        weekContainer.innerHTML = "";
+        weekContainer.appendChild(displayWeek());
+        console.log("update week")
+    } else {
+        const laterContainer = document.querySelector(".later-container");
+        laterContainer.innerHTML = "";
+        laterContainer.appendChild(displayLater());
+        console.log("update later")
+    }
     addWeekListeners();
 }
 
@@ -520,7 +551,7 @@ function addRemoveListener() {
     const removeButtons = document.querySelectorAll(".remove");
     removeButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             if (button.parentElement.classList.contains("done")) {
                 TasksList.list = TasksList.list.filter((task) => {
                     return task.name !== button.dataset.name;
@@ -544,7 +575,7 @@ function addAddListener() {
     const addButtons = document.querySelectorAll(".add");
     addButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             const tasks = TasksList.list.filter((task) => {
                 return task.name === button.dataset.name;
             })
@@ -563,7 +594,7 @@ function addDoneListener() {
     const doneButtons = document.querySelectorAll(".check");
     doneButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             const tasks = TasksList.list.filter((task) => {
                 return task.name === button.dataset.name;
             })
@@ -590,7 +621,7 @@ function addDelListener() {
     const delButtons = document.querySelectorAll(".del");
     delButtons.forEach((button) => {
         button.addEventListener("click", (e) => {
-            e.stopPropagation();
+            e.stopImmediatePropagation();
             TasksList.list = TasksList.list.filter((task) => {
                 return task.name !== button.dataset.name;
             })
@@ -598,8 +629,9 @@ function addDelListener() {
             if (document.querySelector(".home")) {
                 updateAddTasks();
             } else {
-                updateWeekTasks();
+                updateWeekTasks(button.dataset.date);
             }
+            console.log("Deleted")
         })
     })    
 }
@@ -657,7 +689,8 @@ function addCardListenerTodayTasks() {
 function addCardListenerWeek() {
     const cards = document.querySelectorAll(".week .card");
     cards.forEach((card) => {
-        card.addEventListener("click", () => {
+        card.addEventListener("click", (e) => {
+            e.stopImmediatePropagation();
             cardPopup.style.visibility = "visible";
             const edit = document.querySelector(".edit");
             edit.dataset.name = card.dataset.name;
@@ -703,7 +736,7 @@ editForm.addEventListener("submit", (e) => {
         updateTodayTasks();
         updateAddTasks();
     } else {
-        updateWeekTasks();
+        updateWeekTasks(editDue.value);
     }
     updateStorage();
     editTaskPopup.style.visibility = "hidden";
