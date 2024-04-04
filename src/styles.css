@@ -182,7 +182,7 @@ button {
   display: grid;
   grid-template-rows: 40px 90px auto 90px ;
   gap: 5px;
-  padding: 15px;
+  padding: 15px 30px;
 }
 
 .tag-popup {
