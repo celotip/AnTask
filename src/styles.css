@@ -75,12 +75,6 @@ button {
     padding-top: 40px;
 }
 
-.tag-container {
-  display: flex;
-  justify-content: space-between;
-  width: 160px;
-}
-
 .sidebar button {
   color: var(--text-grey-color);
   background-color: var(--header-color);
@@ -88,26 +82,22 @@ button {
   font-size: larger;
 }
 
-.tags-list > * {
+#priority-side {
+  cursor: default;
+}
+
+.priority-list > * {
   margin: 8px 8px 8px 45px;
   color: var(--text-white-color);
 }
 
-.tags-list :first-child {
+.priority-list :first-child {
   margin-top: 10px;
 }
 
-.tags-list button {
+.priority-list a {
   color: var(--text-white-color);
-  border-radius: 10px;
   font-size: 12px;
-  padding: 5px 20px;
-  width: 120px;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  overflow: hidden; 
-  text-shadow: 1px 1px var(--header-color);
-
 }
 
 .color {
@@ -126,8 +116,8 @@ button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 500px;
+  width: 450px;
+  height: 550px;
   background-color: var(--header-color);
   display: flex;
   flex-direction: column;
@@ -135,8 +125,9 @@ button {
   color: var(--text-white-color);
   box-shadow: 0 0 0 100vmax rgba(0, 0, 0, .7);
   border-radius: 20px;
-  z-index: 2;
+  z-index: -1;
   overflow: auto;
+  transition: opacity ease-in 100ms;
 }
 
 @media screen and (max-width: 400px) {
@@ -185,14 +176,6 @@ button {
   padding: 15px 30px;
 }
 
-.tag-popup {
-  display: grid;
-  grid-template-rows: 40px auto 50px ;
-  gap: 5px;
-  padding: 15px;
-  align-items: center;
-}
-
 .card-popup h2 {
   margin-top: 0;
 }
@@ -210,7 +193,7 @@ button {
 
 .new-task-popup form, .edit-task-popup form {
   display: grid;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto;
   gap: 30px;
 }
 
@@ -359,15 +342,16 @@ button {
   font-size: 3em;
 }
 
-.card {
+.card-task {
   display: grid;
-  grid-template-columns: 20px auto 50px 20px;
+  grid-template-columns: 20px auto 52px 20px;
   gap: 20px;
   padding: 5px 10px;
   cursor: pointer;
+  margin-bottom: 5px;
 }
 
-.card > * {
+.card-task > * {
   display: flex;
   align-items: center;
 }
@@ -436,11 +420,22 @@ button {
   height:auto;
 }
 
-.tags-container {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+select {
+  background-color: var(--header-color);
+  color: var(--text-white-color);
+  border: none;
 }
 
+.low {
+  box-shadow: 0 2px #48e073;
+}
+
+.medium {
+  box-shadow: 0 2px #bfe048;
+}
+
+.high {
+  box-shadow: 0 2px #e05248;
+}
 
 

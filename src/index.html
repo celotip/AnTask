@@ -18,19 +18,20 @@
             <h3></h3>
             <a href="#" id="today">To Do</a>
             <a href="#" id="week">My week</a>
-            <!-- <div class="tags">
-                <div class="tag-container">
-                    <a href="#">Tags</a>
-                    <button id="add-tag">+</button>
+            <!-- <div class="priorities">
+                <div class="priority-container">
+                    <a href="#" id="priority-side">Priority</a>
                 </div>
-                <div class="tags-list">
-                    
+                <div class="priority-list">
+                    <a href="#">Low</a>
+                    <a href="#">Medium</a>
+                    <a href="#">High</a>
                 </div>
             </div> -->
         </div>
         <div id="content" class="bg-none"></div>
     </div>
-    <div class="username-popup popup" style="visibility: hidden;">
+    <div class="username-popup popup" style="opacity: 0;">
         <div class="container">
             <h3>Please input a username:</h3>
             <form action="">
@@ -38,22 +39,7 @@
             </form>
         </div>
     </div>
-    <div class="tag-popup popup" style="visibility: hidden;">
-        <form action="">
-            <div class="tag-title-container">
-                <input type="text" placeholder="title" required>
-            </div>
-            <div class="colors-container">
-                <button type="button" data-color="#ce1e1e" style="background-color: #ce1e1e;" class="color"></button>
-                <button type="button" data-color="#c2ce1e" style="background-color: #c2ce1e;" class="color"></button>
-            </div>
-            <div class="tag-buttons">
-                <button type="submit">Add</button>
-                <button type="button" class="cancel">Cancel</button>
-            </div>
-        </form>
-    </div>
-    <div class="new-task-popup popup " style="visibility: hidden;">
+    <div class="new-task-popup popup " style="opacity: 0;">
         <form action="">
             <p>
                 <label for="new-title">Title: </label>
@@ -67,22 +53,21 @@
                 <label for="new-due">Due: </label>
                 <input type="date" id="new-due" name="due" placeholder="22/03/2024" required>
             </p>
-            <!-- <form action="" id="new-tag-form">
-                <p>
-                    <label for="new-tags">Tags: </label>
-                    <select id="new-tags" name="tags">
-                        <option value="priority">Priority</option>
-                    </select>
-                    <button type="submit">Add Tag</button>
-                </p>
-            </form> -->
+            <p>
+                <label for="new-priority">Due: </label>
+                <select name="new-priority" id="new-priority">
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+                    <option value="high">high</option>
+                </select>
+            </p>
             <div class="buttons-container">
                 <button type="submit">Add</button>
                 <button type="button" class="cancel">Cancel</button>
             </div>
         </form>
     </div>
-    <div class="card-popup popup" style="visibility: hidden;">
+    <div class="card-popup popup" style="opacity: 0;">
         <div class="buttons-container">
             <button type="button" class="edit" data-name="">Edit</button>
             <div class="close">&#x2715;</div>
@@ -100,7 +85,7 @@
             <div id="card-due" class="text"></div>
         </div>  
     </div>
-    <div class="edit-task-popup popup " style="visibility: hidden;">
+    <div class="edit-task-popup popup " style="opacity: 0;">
         <form action="">
             <p>
                 <label for="edit-title">Title: </label>
@@ -113,6 +98,14 @@
             <p>
                 <label for="edit-due">Due: </label>
                 <input type="date" id="edit-due" name="due" placeholder="22/03/2024" required>
+            </p>
+            <p>
+                <label for="edit-priority">Priority: </label>
+                <select name="edit-priority" id="edit-priority">
+                    <option value="low">low</option>
+                    <option value="medium">medium</option>
+                    <option value="high">high</option>
+                </select>
             </p>
             <div class="buttons-container">
                 <button type="submit">Edit</button>

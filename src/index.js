@@ -4,43 +4,25 @@ import { addDays, format, compareAsc } from "date-fns";
 // Classes and others
 
 class Task {
-    tags = [];
-    constructor(name, notes, due, today) {
+    constructor(name, notes, due, priority, today) {
         this.name = name;
         this.notes = notes;
         this.due = due;
         this.today = today;
+        this.priority = priority;
         this.done = false;
-    }
-
-    addTag(tag) {
-        this.tags.push(tag)
-    }
-}
-
-class Tag {
-    constructor(name, color) {
-        this.name = name;
-        this.color = color
     }
 }
 
 const TasksList = (function() {
     let list = [];
-    const addTask = (name, notes, due, today) => {
-        let task1 = new Task(name, notes, due, today);
+    const addTask = (name, notes, due, priority, today) => {
+        let task1 = new Task(name, notes, due, priority, today);
         list.push(task1);
     }
 
     return {
         list, addTask
-    };
-})();
-
-const TagsList = (function() {
-    let list = [];
-    return {
-        list
     };
 })();
 
@@ -99,7 +81,6 @@ menuButton.addEventListener("click", () => {
 });
 
 const today = document.getElementById("today");
-// const addTag = document.getElementById("add-tag");
 
 today.addEventListener("click", () => {
     content.classList.remove("bg");
@@ -119,47 +100,31 @@ week.addEventListener("click", () => {
     addWeekListeners();
 })
 
-// function displayTags() {
-//     const tagsContainer = document.createElement("div")
-//     tagsContainer.classList.add("tags-container")
-//     TagsList.list.forEach((tag) => {
-//         const tagButton = document.createElement("button")
-//         tagButton.style.backgroundColor = tag.color
-//         tagButton.innerHTML = tag.name
-//         tagsContainer.appendChild(tagButton)
-//     })
-//     return tagsContainer
-// }
-
-// addTag.addEventListener("click", () => {
-//     tagPopup.style.visibility = "visible";
-// })
-
-
-
 
 // Username Popup
 
 const usernamePopup = document.querySelector(".username-popup");
 const usernameForm = document.querySelector(".username-popup > .container > form");
 const usernameInput = document.querySelector("#username-input");
-// const usernameSidebar = document.querySelector(".sidebar h3:first-child");
+const usernameSidebar = document.querySelector(".sidebar h3:first-child");
 
 if (!localStorage["username"]) {
-    usernamePopup.style.visibility = "visible";
+    usernamePopup.style.opacity = 1;
+    usernamePopup.style.zIndex = 3;
     usernameForm.addEventListener("submit", (e) => {
         e.preventDefault;
         const trimmed = usernameInput.value.trim();
         if (trimmed !== "") {
             localStorage.setItem("username", trimmed);
-            usernamePopup.style.visibility = "hidden";
+            usernamePopup.style.opacity = 0;
+            usernamePopup.style.zIndex = -1;
         } else {
             alert("Please enter a valid username.");
         }
     })
 }
 
-// usernameSidebar.innerHTML = localStorage["username"];
+usernameSidebar.innerHTML = localStorage["username"];
 
 
 
@@ -178,18 +143,10 @@ function homeHeading() {
     return headingContainer;
 }
 
-
-// "Add me to today's list", "Press the plus button next to me", format(new Date(), "yyyy-MM-dd", false)
-{/* <div class="card">
-        <div class="status done"></div>
-        <div class="name"></div>
-        <div class="due"></div>
-        <i class="fa fa-trash-o"></i>
-    </div> */}
-
-function createTodayCardTask(taskName, taskDue, done) {
+function createTodayCardTask(taskName, taskDue, priority, done) {
     const card = document.createElement("div");
-    card.classList.add("card");
+    card.classList.add("card-task");
+    card.classList.add(priority);
     card.setAttribute("data-name", taskName);
     const check = document.createElement("div");
     check.classList.add("check");
@@ -219,9 +176,10 @@ function createTodayCardTask(taskName, taskDue, done) {
 
 
 
-function createAddCardTask(taskName, taskDue) {
+function createAddCardTask(taskName, taskDue, priority) {
     const card = document.createElement("div");
-    card.classList.add("card");
+    card.classList.add("card-task");
+    card.classList.add(priority);
     card.setAttribute("data-name", taskName);
     const add = document.createElement("div");
     add.classList.add("add");
@@ -253,7 +211,7 @@ function displayTodayTasks() {
         return task.today;
     })
     todayTasks.forEach((task) => {
-        tasksContainer.appendChild(createTodayCardTask(task.name, task.due, task.done))
+        tasksContainer.appendChild(createTodayCardTask(task.name, task.due, task.priority, task.done))
     })
     return tasksContainer;
 }
@@ -265,7 +223,7 @@ function addTasks() {
         return !task.today;
     })
     laterTasks.forEach((task) => {
-        addTasks.appendChild(createAddCardTask(task.name, task.due))
+        addTasks.appendChild(createAddCardTask(task.name, task.due, task.priority))
     })
     return addTasks;
 }
@@ -288,7 +246,8 @@ function home() {
     newTaskButton.classList.add("new-task");
     newTaskButton.innerHTML = "New Task";
     newTaskButton.addEventListener("click", () => {
-        newTaskPopup.style.visibility = "visible";
+        newTaskPopup.style.opacity = 1;
+        newTaskPopup.style.zIndex = 3;
         newTitle.value = "";
         newDesc.value = "";
         newDue.value = ""; 
@@ -305,9 +264,10 @@ function home() {
     return homeContainer;
 };
 
-function createWeekCardTask(taskName, taskDue, done) {
+function createWeekCardTask(taskName, taskDue, priority, done) {
     const card = document.createElement("div");
-    card.classList.add("card");
+    card.classList.add("card-task");
+    card.classList.add(priority);
     card.setAttribute("data-name", taskName);
     card.setAttribute("data-due", taskDue);
     const check = document.createElement("div");
@@ -345,7 +305,7 @@ function displayToday() {
         return new Date(task.due) <= curDate;
     })
     todayTasks.forEach((task) => {
-        tasksContainer.appendChild(createWeekCardTask(task.name, task.due, task.done))
+        tasksContainer.appendChild(createWeekCardTask(task.name, task.due, task.priority, task.done))
     })
     return tasksContainer;
 }
@@ -358,7 +318,7 @@ function displayWeek() {
         return new Date(task.due) <= nextWeek && new Date(task.due) > new Date();
     })
     todayTasks.forEach((task) => {
-        tasksContainer.appendChild(createWeekCardTask(task.name, task.due, task.done))
+        tasksContainer.appendChild(createWeekCardTask(task.name, task.due, task.priority, task.done))
     })
     return tasksContainer;
 }
@@ -371,7 +331,7 @@ function displayLater() {
         return new Date(task.due) > nextWeek;
     })
     todayTasks.forEach((task) => {
-        tasksContainer.appendChild(createWeekCardTask(task.name, task.due, task.done))
+        tasksContainer.appendChild(createWeekCardTask(task.name, task.due, task.priority, task.done))
     })
     return tasksContainer;
 }
@@ -399,7 +359,8 @@ function weekView() {
     newTaskButton.classList.add("week-new-task");
     newTaskButton.innerHTML = "+";
     newTaskButton.addEventListener("click", () => {
-        newTaskPopup.style.visibility = "visible";
+        newTaskPopup.style.opacity = 1;
+        newTaskPopup.style.zIndex = 3;
         newTitle.value = "";
         newDesc.value = "";
         newDue.value = ""; 
@@ -426,22 +387,10 @@ function weekView() {
 if (window.localStorage.getItem("tasksList")) {
     TasksList.list = JSON.parse(window.localStorage.getItem("tasksList"));
 } else {
-    TasksList.list.push(new Task("Add me to today's list", "Press the plus button next to me", format(new Date(), "yyyy-MM-dd", false)));
+    TasksList.list.push(new Task("Add me to today's list", "Press the plus button next to me", format(new Date(), "yyyy-MM-dd", false)), "low");
     updateStorage();
 }
 content.appendChild(home());
-
-// TagsList.list.push(new Tag("Priority", "#ce1e1e"))
-// TagsList.list.push(new Tag("Top", "#c2ce1e"))
-// TagsList.list.push(new Tag("Homework", "#1e2cce"))
-
-// function updateTagsSidebar() {
-//     const tagsSidebar = document.querySelector(".tags-list")
-//     tagsSidebar.innerHTML = ""
-//     tagsSidebar.appendChild(displayTags())
-// }
-
-// updateTagsSidebar()
 
 
 
@@ -451,34 +400,29 @@ content.appendChild(home());
 
 
 // Others
-const tagPopup = document.querySelector(".tag-popup");
-const tagForm = document.querySelector(".tag-popup > form");
-const cancelTag = document.querySelector(".tag-popup > form > .tag-buttons > .cancel");
-
-tagForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-})
-
-cancelTag.addEventListener("click", () => {
-    tagPopup.style.visibility = "hidden";
-})
-
 const newTitle = document.getElementById("new-title");
 const newDesc = document.getElementById("new-desc");
 const newDue = document.getElementById("new-due");
+const newPriority = document.getElementById("new-priority")
 const newTaskPopup = document.querySelector(".new-task-popup");
 
 const newForm = document.querySelector(".new-task-popup > form");
-newForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    TasksList.list.push(new Task(newTitle.value, newDesc.value, newDue.value, false));
+
+function newSubmit() {
+    TasksList.list.push(new Task(newTitle.value, newDesc.value, newDue.value, newPriority.value, false));
     updateStorage();
     if (document.querySelector(".home") || document.querySelector(".phone")) {
         updateAddTasks();
     } else {
         updateWeekTasks(newDue.value);
     }
-    newTaskPopup.style.visibility = "hidden";
+    newTaskPopup.style.opacity = 0;
+    newTaskPopup.style.zIndex = -1;
+}
+
+newForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    newSubmit();
 })
 
 // function handleEnter(event) {
@@ -492,7 +436,8 @@ newForm.addEventListener("submit", (e) => {
 
 const cancel = document.querySelector(".new-task-popup > form > .buttons-container > .cancel");
 cancel.addEventListener("click", () => {
-    newTaskPopup.style.visibility = "hidden";
+    newTaskPopup.style.opacity = 0;
+    newTaskPopup.style.zIndex = -1;
 })
 
 function updateTodayTasks() {
@@ -645,10 +590,11 @@ function updateStorage() {
 const cardPopup = document.querySelector(".card-popup");
 
 function addCardListenerAddTasks() {
-    const cards = document.querySelectorAll(".add-tasks .card");
+    const cards = document.querySelectorAll(".add-tasks .card-task");
     cards.forEach((card) => {
         card.addEventListener("click", () => {
-            cardPopup.style.visibility = "visible";
+            cardPopup.style.opacity = 1;
+            cardPopup.style.zIndex = 3;
             const edit = document.querySelector(".edit");
             edit.dataset.name = card.dataset.name;
             const title = document.getElementById("card-title");
@@ -661,15 +607,16 @@ function addCardListenerAddTasks() {
             desc.innerHTML = tasks[0].notes;
             due.innerHTML = format(tasks[0].due, "MMM dd yyyy");
             console.log("card clicked")
-        }, {once: true})
+        })
     })
 }
 
 function addCardListenerTodayTasks() {
-    const cards = document.querySelectorAll(".today-tasks-container-1 .tasks-container .card");
+    const cards = document.querySelectorAll(".today-tasks-container-1 .tasks-container .card-task");
     cards.forEach((card) => {
         card.addEventListener("click", () => {
-            cardPopup.style.visibility = "visible";
+            cardPopup.style.opacity = 1;
+            cardPopup.style.zIndex = 3;
             const edit = document.querySelector(".edit");
             edit.dataset.name = card.dataset.name;
             const title = document.getElementById("card-title");
@@ -682,16 +629,17 @@ function addCardListenerTodayTasks() {
             desc.innerHTML = tasks[0].notes;
             due.innerHTML = format(tasks[0].due, "MMM dd yyyy");
             console.log("card clicked")
-        }, {once: true})
+        })
     })
 }
 
 function addCardListenerWeek() {
-    const cards = document.querySelectorAll(".week .card");
+    const cards = document.querySelectorAll(".week .card-task");
     cards.forEach((card) => {
         card.addEventListener("click", (e) => {
             e.stopImmediatePropagation();
-            cardPopup.style.visibility = "visible";
+            cardPopup.style.opacity = 1;
+            cardPopup.style.zIndex = 3;
             const edit = document.querySelector(".edit");
             edit.dataset.name = card.dataset.name;
             const title = document.getElementById("card-title");
@@ -704,7 +652,7 @@ function addCardListenerWeek() {
             desc.innerHTML = tasks[0].notes;
             due.innerHTML = format(tasks[0].due, "MMM dd yyyy");
             console.log("card clicked")
-        }, {once: true})
+        })
     })
 }
 
@@ -717,22 +665,24 @@ const editForm = document.querySelector(".edit-task-popup > form");
 const editTitle = document.getElementById("edit-title");
 const editDesc = document.getElementById("edit-desc");
 const editDue = document.getElementById("edit-due");
+const editPriority = document.getElementById("edit-priority");
 let editName;
 let preEditDue;
 
 const cancelEdit = document.querySelector(".edit-task-popup > form > .buttons-container > .cancel");
 cancelEdit.addEventListener("click", () => {
-    editTaskPopup.style.visibility = "hidden";
+    editTaskPopup.style.opacity = 0;
+    editTaskPopup.style.zIndex = -1;
 })
 
-editForm.addEventListener("submit", (e) => {
-    e.preventDefault();
+function editSubmit() {
     const tasks = TasksList.list.filter((task) => {
         return task.name === editName;
     })
     tasks[0].name = editTitle.value;
     tasks[0].notes = editDesc.value;
     tasks[0].due = editDue.value;
+    tasks[0].priority = editPriority.value;
     if (document.querySelector(".home") || document.querySelector(".phone")) {
         updateTodayTasks();
         updateAddTasks();
@@ -741,18 +691,27 @@ editForm.addEventListener("submit", (e) => {
         updateWeekTasks(editDue.value);
     }
     updateStorage();
-    editTaskPopup.style.visibility = "hidden";
+    editTaskPopup.style.opacity = 0;
+    editTaskPopup.style.zIndex = -1;
+}
+
+editForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    editSubmit();
 })
 
 const closeButton = document.querySelector(".close");
 closeButton.addEventListener("click", () => {
-    cardPopup.style.visibility = "hidden";
+    cardPopup.style.opacity = 0;
+    cardPopup.style.zIndex = -1;
 }) 
 
 const editButton = document.querySelector(".edit");
 editButton.addEventListener("click", () => {
-    cardPopup.style.visibility = "hidden";
-    editTaskPopup.style.visibility = "visible";
+    cardPopup.style.opacity = 0;
+    cardPopup.style.zIndex = -1;
+    editTaskPopup.style.opacity = 1;
+    editTaskPopup.style.zIndex = 3;
     const tasks = TasksList.list.filter((task) => {
         return task.name === editButton.dataset.name;
     })
@@ -761,4 +720,58 @@ editButton.addEventListener("click", () => {
     editDue.value = tasks[0].due;
     editName = editButton.dataset.name;
     preEditDue = tasks[0].due;
+})
+
+function checkPopupActive() {
+    const popups = document.querySelectorAll(".popup")
+    popups.forEach((p) => {
+        if (p.style.opacity === 1) {
+            return true
+        }
+    })
+}
+
+document.querySelectorAll('input').forEach( el => {
+    el.addEventListener('keydown', e => {
+        if(e.key === "Enter") {
+            let nextEl = el.parentElement.nextElementSibling.children;
+            console.log(nextEl[1].tagName);
+            if (nextEl[1].tagName === "BR") {
+                nextEl[3].focus();
+            } else {
+                nextEl[1].focus();
+            }
+        }
+    })
+})
+
+document.querySelectorAll('textarea').forEach( el => {
+    el.addEventListener('keydown', e => {
+        if(e.key === "Enter") {
+            let nextEl = el.parentElement.nextElementSibling.children;
+            nextEl[1].focus();
+        }
+    })
+})
+
+document.querySelectorAll('select').forEach( el => {
+    el.addEventListener('keydown', e => {
+        e.preventDefault();
+            if(e.key === "Enter") {
+                let nextEl = el.parentElement.nextElementSibling.children;
+                nextEl[0].focus();
+            }
+    })
+})
+
+document.querySelectorAll('button').forEach( el => {
+    el.addEventListener('keydown', e => {
+        if(e.key === "Enter") {
+            el.click();
+            let nextEl = el.nextElementSibling;
+            if (nextEl) {
+                nextEl.focus();
+            }
+        }
+    })
 })
