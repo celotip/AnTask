@@ -718,6 +718,7 @@ const editTitle = document.getElementById("edit-title");
 const editDesc = document.getElementById("edit-desc");
 const editDue = document.getElementById("edit-due");
 let editName;
+let preEditDue;
 
 const cancelEdit = document.querySelector(".edit-task-popup > form > .buttons-container > .cancel");
 cancelEdit.addEventListener("click", () => {
@@ -736,6 +737,7 @@ editForm.addEventListener("submit", (e) => {
         updateTodayTasks();
         updateAddTasks();
     } else {
+        updateWeekTasks(preEditDue);
         updateWeekTasks(editDue.value);
     }
     updateStorage();
@@ -758,4 +760,5 @@ editButton.addEventListener("click", () => {
     editDesc.value = tasks[0].notes;
     editDue.value = tasks[0].due;
     editName = editButton.dataset.name;
+    preEditDue = tasks[0].due;
 })
