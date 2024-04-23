@@ -344,7 +344,7 @@ button {
 
 .card-task {
   display: grid;
-  grid-template-columns: 20px auto 52px 20px;
+  grid-template-columns: 20px auto 55px 20px;
   gap: 20px;
   padding: 5px 10px;
   cursor: pointer;

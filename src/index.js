@@ -718,6 +718,7 @@ editButton.addEventListener("click", () => {
     editTitle.value = tasks[0].name;
     editDesc.value = tasks[0].notes;
     editDue.value = tasks[0].due;
+    editPriority.value = tasks[0].priority;
     editName = editButton.dataset.name;
     preEditDue = tasks[0].due;
 })
