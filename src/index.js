@@ -387,7 +387,7 @@ function weekView() {
 if (window.localStorage.getItem("tasksList")) {
     TasksList.list = JSON.parse(window.localStorage.getItem("tasksList"));
 } else {
-    TasksList.list.push(new Task("Add me to today's list", "Press the plus button next to me", format(new Date(), "yyyy-MM-dd", false)), "low");
+    TasksList.list.push(new Task("Add me to today's list", "Press the plus button next to me", format(new Date(), "yyyy-MM-dd"), "low", false));
     updateStorage();
 }
 content.appendChild(home());
